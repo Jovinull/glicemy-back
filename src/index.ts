@@ -1,12 +1,19 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import userRoutes from './routes/userRoutes';
+import cors from 'cors';
+import authRoutes from './routes/authRoutes'; // ✅ Agora funcionará corretamente
 
 dotenv.config();
 
 const app = express();
 
+// Middleware
 app.use(express.json());
-app.use('/api/users', userRoutes);
+app.use(cors());
 
-app.listen(3000, () => console.log("Servidor iniciado na porta 3000!"));
+// Rotas
+app.use('/api/auth', authRoutes);
+
+// Inicialização do servidor
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Servidor iniciado na porta ${PORT}!`));
