@@ -6,20 +6,26 @@ interface JwtPayload {
   id: number;
 }
 
-export async function authMiddleware(req: Request, res: Response, next: NextFunction) {
+export async function authMiddleware(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const token = req.headers.authorization?.split(' ')[1];
 
-    if (!token) return res.status(401).json({ message: 'Token não fornecido.' });
+    if (!token) {
+      res.status(401).json({ message: 'Token não fornecido.' });
+      return;
+    }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
     const user = await prisma.user.findUnique({ where: { id: decoded.id } });
 
-    if (!user) return res.status(401).json({ message: 'Usuário inválido.' });
+    if (!user) {
+      res.status(401).json({ message: 'Usuário inválido.' });
+      return;
+    }
 
-    req.user = user;
-    next();
+    req.user = user; // ✅ Agora `req.user` é reconhecido corretamente.
+    next(); // ✅ Chamamos `next()` corretamente
   } catch (error) {
-    return res.status(401).json({ message: 'Token inválido ou expirado.' });
+    res.status(401).json({ message: 'Token inválido ou expirado.' });
   }
 }

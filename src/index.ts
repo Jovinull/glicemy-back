@@ -1,7 +1,11 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import authRoutes from './routes/authRoutes'; // ✅ Agora funcionará corretamente
+import authRoutes from './routes/authRoutes';
+import userRoutes from './routes/userRoutes';
+import supervisorRoutes from './routes/supervisorRoutes';
+import recordsRoutes from './routes/recordsRoutes';
+import medicationRoutes from './routes/medicationRoutes';
 
 dotenv.config();
 
@@ -13,7 +17,11 @@ app.use(cors());
 
 // Rotas
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/supervisors', supervisorRoutes);
+app.use('/api/records', recordsRoutes);
+app.use('/api/medications', medicationRoutes);
 
 // Inicialização do servidor
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor iniciado na porta ${PORT}!`));
+app.listen(PORT, () => console.log(`🚀 Servidor iniciado na porta ${PORT}!`));
