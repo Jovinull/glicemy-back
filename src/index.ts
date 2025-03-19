@@ -6,6 +6,7 @@ import userRoutes from './routes/userRoutes';
 import supervisorRoutes from './routes/supervisorRoutes';
 import recordsRoutes from './routes/recordsRoutes';
 import medicationRoutes from './routes/medicationRoutes';
+import reminderRoutes from './routes/reminderRoutes';
 
 dotenv.config();
 
@@ -21,7 +22,9 @@ app.use('/api/users', userRoutes);
 app.use('/api/supervisors', supervisorRoutes);
 app.use('/api/records', recordsRoutes);
 app.use('/api/medications', medicationRoutes);
+app.use('/api/reminders', reminderRoutes);
+
 
 // Inicialização do servidor
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Servidor iniciado na porta ${PORT}!`));
+app.listen(PORT, () => console.log(`Servidor iniciado na porta ${PORT}!`));
