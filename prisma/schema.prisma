@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                        Int                        @id @default(autoincrement())
+  email                     String                     @unique
+  password                  String
+  name                      String
+  supervisors               Supervisor[]               @relation("SupervisorUsers")
+  glycemiaRecords           GlycemiaRecord[]
+  glycatedHemoglobinRecords GlycatedHemoglobinRecord[]
+  weightHeightRecords       WeightHeightRecord[]
+  medications               Medication[]
+  reminders                 Reminder[]
+  createdAt                 DateTime                   @default(now())
+  updatedAt                 DateTime                   @updatedAt
+}
+
+model Supervisor {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  users     User[]   @relation("SupervisorUsers")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model GlycemiaRecord {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  value     Float
+  timestamp DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model GlycatedHemoglobinRecord {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  percentage Float
+  timestamp  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model WeightHeightRecord {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  weight    Float
+  height    Float
+  bmi       Float
+  timestamp DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model Medication {
+  id        Int        @id @default(autoincrement())
+  userId    Int
+  name      String
+  dosage    String
+  frequency String
+  startDate DateTime
+  endDate   DateTime?
+  user      User       @relation(fields: [userId], references: [id])
+  reminders Reminder[] // Linha adicionada para relação inversa
+
+  @@index([userId])
+}
+
+model Reminder {
+  id           Int         @id @default(autoincrement())
+  userId       Int
+  medicationId Int?
+  message      String
+  remindAt     DateTime
+  createdAt    DateTime    @default(now())
+  user         User        @relation(fields: [userId], references: [id])
+  medication   Medication? @relation(fields: [medicationId], references: [id])
+
+  @@index([userId])
+  @@index([medicationId])
+}
