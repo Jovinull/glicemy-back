@@ -20,13 +20,27 @@ export const registerUser = async (req: Request, res: Response) => {
 export const loginUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await prisma.user.findUnique({
+    where: { email },
+    include: {
+      diabetesType: true,  // Inclui o tipo de diabetes relacionado ao usuário
+    },
+  });
   if (!user) return res.status(400).json({ message: 'Usuário não encontrado.' });
 
   const passwordMatch = await bcrypt.compare(password, user.password);
   if (!passwordMatch) return res.status(400).json({ message: 'Senha incorreta.' });
 
-  res.json({ id: user.id, email: user.email, name: user.name, token: generateToken(user.id) });
+  res.json({
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    diagnosisYear: user.diagnosisYear,
+    gender: user.gender,
+    phone: user.phone,
+    diabetesType: user.diabetesType?.name,  // Se a relação for nullable, como no seu caso, o `?` garante que o valor seja seguro
+    token: generateToken(user.id)
+  });
 };
 
 export const registerSupervisor = async (req: Request, res: Response) => {

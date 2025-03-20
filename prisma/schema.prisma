@@ -7,11 +7,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model DiabetesType {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User[]
+}
+
 model User {
   id                        Int                        @id @default(autoincrement())
   email                     String                     @unique
   password                  String
   name                      String
+  gender                    String
+  phone                     String
+  diagnosisYear             Int
+  diabetesTypeId            Int
   supervisors               Supervisor[]               @relation("SupervisorUsers")
   glycemiaRecords           GlycemiaRecord[]
   glycatedHemoglobinRecords GlycatedHemoglobinRecord[]
@@ -20,6 +32,9 @@ model User {
   reminders                 Reminder[]
   createdAt                 DateTime                   @default(now())
   updatedAt                 DateTime                   @updatedAt
+  diabetesType              DiabetesType               @relation(fields: [diabetesTypeId], references: [id])
+
+  @@index([diabetesTypeId])
 }
 
 model Supervisor {

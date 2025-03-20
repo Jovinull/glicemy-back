@@ -11,18 +11,31 @@ async function main() {
   const hashedPassword = await bcrypt.hash('123456', 10);
 
   // 🔹 Criando Usuários
+  const diabetesTypes = await prisma.diabetesType.createMany({
+    data: [
+      { name: "Diabetes Tipo 1" },
+      { name: "Diabetes Tipo 2" },
+      { name: "Diabetes Gestacional" },
+      { name: "Diabetes Mody" },
+      { name: "Diabetes LADA" }
+    ],
+  });
+
+  console.log("✅ Tipos de Diabetes criados!");
+
+  // 🔹 Criando Usuários
   const users = await prisma.user.createMany({
     data: [
-      { email: "ana.silva@gmail.com", password: hashedPassword, name: "Ana Silva" },
-      { email: "carlos.souza@gmail.com", password: hashedPassword, name: "Carlos Souza" },
-      { email: "fernanda.lima@gmail.com", password: hashedPassword, name: "Fernanda Lima" },
-      { email: "joao.pereira@gmail.com", password: hashedPassword, name: "João Pereira" },
-      { email: "maria.oliveira@gmail.com", password: hashedPassword, name: "Maria Oliveira" },
-      { email: "lucas.martins@gmail.com", password: hashedPassword, name: "Lucas Martins" },
-      { email: "camila.rodrigues@gmail.com", password: hashedPassword, name: "Camila Rodrigues" },
-      { email: "rafael.ferreira@gmail.com", password: hashedPassword, name: "Rafael Ferreira" },
-      { email: "isabela.moura@gmail.com", password: hashedPassword, name: "Isabela Moura" },
-      { email: "pedro.alves@gmail.com", password: hashedPassword, name: "Pedro Alves" },
+      { email: "ana.silva@gmail.com", password: hashedPassword, name: "Ana Silva", diagnosisYear: 2010, gender: "feminino", phone: "11999999999", diabetesTypeId: 1 },
+      { email: "carlos.souza@gmail.com", password: hashedPassword, name: "Carlos Souza", diagnosisYear: 2015, gender: "masculino", phone: "11988888888", diabetesTypeId: 2 },
+      { email: "fernanda.lima@gmail.com", password: hashedPassword, name: "Fernanda Lima", diagnosisYear: 2020, gender: "feminino", phone: "11977777777", diabetesTypeId: 3 },
+      { email: "joao.pereira@gmail.com", password: hashedPassword, name: "João Pereira", diagnosisYear: 2018, gender: "masculino", phone: "11966666666", diabetesTypeId: 4 },
+      { email: "maria.oliveira@gmail.com", password: hashedPassword, name: "Maria Oliveira", diagnosisYear: 2012, gender: "feminino", phone: "11955555555", diabetesTypeId: 5 },
+      { email: "lucas.martins@gmail.com", password: hashedPassword, name: "Lucas Martins", diagnosisYear: 2016, gender: "masculino", phone: "11944444444", diabetesTypeId: 1 },
+      { email: "camila.rodrigues@gmail.com", password: hashedPassword, name: "Camila Rodrigues", diagnosisYear: 2017, gender: "feminino", phone: "11933333333", diabetesTypeId: 2 },
+      { email: "rafael.ferreira@gmail.com", password: hashedPassword, name: "Rafael Ferreira", diagnosisYear: 2019, gender: "masculino", phone: "11922222222", diabetesTypeId: 3 },
+      { email: "isabela.moura@gmail.com", password: hashedPassword, name: "Isabela Moura", diagnosisYear: 2021, gender: "feminino", phone: "11911111111", diabetesTypeId: 4 },
+      { email: "pedro.alves@gmail.com", password: hashedPassword, name: "Pedro Alves", diagnosisYear: 2022, gender: "masculino", phone: "11900000000", diabetesTypeId: 5 },
     ],
   });
 
