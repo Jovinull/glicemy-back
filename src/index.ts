@@ -8,6 +8,7 @@ import recordsRoutes from './routes/recordsRoutes';
 import medicationRoutes from './routes/medicationRoutes';
 import reminderRoutes from './routes/reminderRoutes';
 import { securityMiddleware } from './middleware/securityMiddleware';
+import { setupSwagger } from './config/swagger';
 
 dotenv.config();
 
@@ -18,6 +19,8 @@ securityMiddleware(app);
 
 app.use(express.json());
 app.use(cors());
+
+setupSwagger(app);
 
 // Rotas da API
 app.use('/api/auth', authRoutes);
