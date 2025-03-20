@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import prisma from '../config/prismaClient';
+import { encryptData, decryptData } from '../middleware/encryptionMiddleware';
 
 export const createMedication = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -8,7 +9,7 @@ export const createMedication = async (req: Request, res: Response): Promise<voi
     const medication = await prisma.medication.create({
       data: {
         userId: req.user?.id as number,
-        name,
+        name: encryptData(name), // 🔐 Criptografando nome do medicamento
         dosage,
         frequency,
         startDate,
@@ -25,7 +26,13 @@ export const createMedication = async (req: Request, res: Response): Promise<voi
 export const getMedications = async (req: Request, res: Response): Promise<void> => {
   try {
     const medications = await prisma.medication.findMany({ where: { userId: req.user?.id } });
-    res.json(medications);
+
+    const decryptedMedications = medications.map(med => ({
+      ...med,
+      name: decryptData(med.name), // 🔓 Descriptografando nome do medicamento
+    }));
+
+    res.json(decryptedMedications);
   } catch (error) {
     res.status(500).json({ message: 'Erro ao buscar medicamentos' });
   }

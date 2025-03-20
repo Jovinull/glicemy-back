@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "ts-node-dev --transpile-only --exit-child src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "seed": "ts-node prisma/seed.ts",
+    "db:init": "npx prisma migrate deploy && npm run seed"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +18,9 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "glicemy-back": "file:",
+    "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.14.1",
     "prisma": "^6.5.0"

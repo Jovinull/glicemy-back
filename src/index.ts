@@ -7,16 +7,19 @@ import supervisorRoutes from './routes/supervisorRoutes';
 import recordsRoutes from './routes/recordsRoutes';
 import medicationRoutes from './routes/medicationRoutes';
 import reminderRoutes from './routes/reminderRoutes';
+import { securityMiddleware } from './middleware/securityMiddleware';
 
 dotenv.config();
 
 const app = express();
 
-// Middleware
+// Middleware de Segurança
+securityMiddleware(app);
+
 app.use(express.json());
 app.use(cors());
 
-// Rotas
+// Rotas da API
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/supervisors', supervisorRoutes);
@@ -24,7 +27,6 @@ app.use('/api/records', recordsRoutes);
 app.use('/api/medications', medicationRoutes);
 app.use('/api/reminders', reminderRoutes);
 
-
 // Inicialização do servidor
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor iniciado na porta ${PORT}!`));
+app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}!`));
