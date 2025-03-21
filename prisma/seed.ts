@@ -55,6 +55,30 @@ async function main() {
   // 🔹 Pegando IDs dos usuários criados
   const allUsers = await prisma.user.findMany();
 
+  for (const user of allUsers) {
+    // 🔹 Criando registros de peso
+    await prisma.weightRecord.createMany({
+      data: [
+        { userId: user.id, weight: 60, timestamp: new Date(`2024-03-18T08:00:00Z`) },
+        { userId: user.id, weight: 61, timestamp: new Date(`2024-03-18T08:00:00Z`) },
+      ],
+    });
+  }
+
+  console.log("✅ Pesos criados!");
+
+  for (const user of allUsers) {
+    // 🔹 Criando registros de altura
+    await prisma.heightRecord.createMany({
+      data: [
+        { userId: user.id, height: 1.50 * 1.02, timestamp: new Date(`2024-03-18T08:00:00Z`) },
+        { userId: user.id, height: 1.50 * 1.03, timestamp: new Date(`2024-03-18T08:00:00Z`) }
+      ]
+    });
+  }
+
+  console.log("✅ Alturas criados!");
+
   // 🔹 Criando Medicamentos para cada usuário
   for (const user of allUsers) {
     await prisma.medication.createMany({
@@ -101,6 +125,26 @@ async function main() {
 
   console.log("✅ Registros de Glicemia criados!");
 
+  // 🔹 Criando Registros de Hemoglobina Glicada para cada usuário
+  for (const user of allUsers) {
+    await prisma.glycatedHemoglobinRecord.createMany({
+      data: [
+        { userId: user.id, percentage: 6.5, timestamp: new Date() },
+        { userId: user.id, percentage: 7.2, timestamp: new Date() },
+        { userId: user.id, percentage: 6.8, timestamp: new Date() },
+        { userId: user.id, percentage: 7.5, timestamp: new Date() },
+        { userId: user.id, percentage: 7.9, timestamp: new Date() },
+        { userId: user.id, percentage: 6.3, timestamp: new Date() },
+        { userId: user.id, percentage: 7.0, timestamp: new Date() },
+        { userId: user.id, percentage: 6.6, timestamp: new Date() },
+        { userId: user.id, percentage: 7.8, timestamp: new Date() },
+        { userId: user.id, percentage: 6.9, timestamp: new Date() },
+      ],
+    });
+  }
+
+  console.log("✅ Registros de Hemogobina Gicada criados!");
+
   // 🔹 Criando Lembretes para os usuários
   const allMedications = await prisma.medication.findMany();
   for (const medication of allMedications) {
@@ -114,7 +158,7 @@ async function main() {
     });
   }
 
-  console.log("✅ Lembretes criados!");
+  console.log("✅ Medicamentos criados!");
 
   console.log("🎉 Seed concluído com sucesso!");
 }

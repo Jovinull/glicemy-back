@@ -7,6 +7,8 @@ import supervisorRoutes from './routes/supervisorRoutes';
 import recordsRoutes from './routes/recordsRoutes';
 import medicationRoutes from './routes/medicationRoutes';
 import reminderRoutes from './routes/reminderRoutes';
+import weightRoutes from './routes/weightRoutes';
+import heightRoutes from './routes/heightRoutes';
 import { securityMiddleware } from './middleware/securityMiddleware';
 import { setupSwagger } from './config/swagger';
 
@@ -29,6 +31,8 @@ app.use('/api/supervisors', supervisorRoutes);
 app.use('/api/records', recordsRoutes);
 app.use('/api/medications', medicationRoutes);
 app.use('/api/reminders', reminderRoutes);
+app.use('/api/weights', weightRoutes);
+app.use('/api/heights', heightRoutes);
 
 // Inicialização do servidor
 const PORT = process.env.PORT || 3000;

@@ -4,17 +4,27 @@ import prisma from '../config/prismaClient';
 import { generateToken } from '../utils/generateToken';
 
 export const registerUser = async (req: Request, res: Response) => {
-  const { email, password, name } = req.body;
+  const { email, password, name, gender, birthDate, phone, diagnosisYear, diabetesTypeId } = req.body;
 
   const existingUser = await prisma.user.findUnique({ where: { email } });
   if (existingUser) return res.status(400).json({ message: 'Email já cadastrado.' });
 
   const hashedPassword = await bcrypt.hash(password, 10);
   const user = await prisma.user.create({
-    data: { email, password: hashedPassword, name },
-  });
+    data: { email, password: hashedPassword, name, gender, phone, diagnosisYear, diabetesTypeId },
+  }, 
+);
 
-  res.json({ id: user.id, email: user.email, name: user.name, token: generateToken(user.id) });
+  res.json({
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    gender: user.gender,
+    phone: user.phone,
+    diagnosisYear: user.diagnosisYear,
+    diabetesType: user.diabetesType?.name,
+    token: generateToken(user.id)
+  });
 };
 
 export const loginUser = async (req: Request, res: Response) => {

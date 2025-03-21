@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authMiddleware } from '../middleware/authMiddleware';
-import { createGlycemiaRecord, getGlycemiaRecords, getGlycemiaRecordById, updateGlycemiaRecord, deleteGlycemiaRecord } from '../controllers/recordsController';
+import { createGlycemiaRecord, getGlycemiaRecords, getGlycemiaRecordById, updateGlycemiaRecord, deleteGlycemiaRecord, createGlycatedHemoglobinRecord, getGlycatedHemoglobinRecords, getGlycatedHemoglobinRecordById, updateGlycatedHemoglobinRecord, deleteGlycatedHemoglobinRecord } from '../controllers/recordsController';
 
 const router = Router();
 
@@ -115,5 +115,15 @@ router.put('/glycemia/:id', authMiddleware, updateGlycemiaRecord);
  *         description: Registro de glicemia deletado com sucesso
  */
 router.delete('/glycemia/:id', authMiddleware, deleteGlycemiaRecord);
+
+router.post('/glycatedHemoglobin', authMiddleware, createGlycatedHemoglobinRecord);
+
+router.get('/glycatedHemoglobin', authMiddleware, getGlycatedHemoglobinRecords);
+
+router.get('/glycatedHemoglobin/:id', authMiddleware, getGlycatedHemoglobinRecordById);
+
+router.put('/glycatedHemoglobin/:id', authMiddleware, updateGlycatedHemoglobinRecord);
+
+router.delete('/glycatedHemoglobin/:id', authMiddleware, deleteGlycatedHemoglobinRecord);
 
 export default router;
